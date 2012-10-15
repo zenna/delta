@@ -14,7 +14,10 @@ class type {
 };
 
 class Socket {
-
+	sg::name name;
+	Belief;
+	Weight;
+	sg::type type;
 };
 
 }
