@@ -9,18 +9,14 @@
 
 // OK so here's the problem.
 /* We are saying the policy has the capacity to transform and modify values at will
-// The problem then is how does this interact with a;; otehr evidence.
+At some level, one of these machiens just has to be running, step by step. Right? Otherwise, nothing
+wil hap
 
-I have a chicken and egg problem with the directories unless I let directories be value ndoes.
-But I am forgetting all about conditioning.  Goddamit!
-How am I?
-
-I am saying I can edit values of nodes as we speak.  
 */
 
-// void propagate(source_socket, target_socket, double weight) {
+void propagate(source_socket, target_socket, double weight) {
 
-// }
+}
 
 int main() {
 	// Choose an ensemble, must be one already present or implicit main
@@ -28,7 +24,7 @@ int main() {
 	sg::ensemble loop("loop");
 	sg::ensemble evidence("evidence");
 
-	//Q. shoud data and value nodes be different,
+	// Q. should data and value nodes be different,
 	sg::data<int> one("one");
 	sg::data<int> zero("zero");
 	sg::data<int> plus("plus");
@@ -37,14 +33,14 @@ int main() {
 	std::list<sg::machine *> loop_machines = {&one,&zero,&plus};
 	sg::List<sg::machine *> the_machines(loop_machines);
 	loop.set_socket(sg::Name("machines"), &the_machines);
-	// propagate("one:machine", "two:love", 1.0)
+	propagate("one:machine", "two:love", 1.0)
 
-	// // Create the evidence formulae	
+	// Create the evidence formulae	
 	// sg::data<int> one_val("one");
 	// sg::equal equal("equal?");
 
-	// // Create a relation for the directory socket
-	// // Add an entry which propagates its data to the 0th arg of plus on alpha channel
+	// Create a relation for the directory socket
+	// Add an entry which propagates its data to the 0th arg of plus on alpha channel
 	// sg::tuple<sg::name, sg::name, sg::real> d("self:data", "equals?:0", 1.0);
 	// sg::list<sg::tuple> relation(d);
 	// one_val.set_socket("dir",d);
