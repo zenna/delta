@@ -8,10 +8,11 @@ namespace sg {
 
 class Value {
 	void * value;
+	sg::Type type;
 
 public:
 	template <typename T>
-	Value(T &data) {
+	Value(T &data, sg::Type type) : type(type) {
 		value = &value;
 	}
 };

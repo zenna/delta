@@ -23,9 +23,13 @@ int main() {
 	// sg::ensemble loop("loop"); 
 
 	// Create all machines to go inside this ensemble
-	sg::data<int> one(sg::Name("one"));
+	sg::data one(sg::Name("one"));
 	int one_on_stack = 1;
-	sg::Value one_value(one_on_stack);
+	
+	sg::Type integer_type;
+	integer_type.add_subtype(sg::Type::Prim::Integer);
+
+	sg::Value one_value(one_on_stack, integer_type);
 	one.set_socket(sg::Name("value"), one_value);
 
 	// Make value polymorphic, or have void pointers

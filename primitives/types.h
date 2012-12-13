@@ -49,41 +49,68 @@ The operations we will need to use hte type for
 // Need a datastructure which makes it fast to test equivalence
 // And can test to see if a type variable is consistent
 class Type {
-
-};
-
-class SocketType {
-	sg::Name socket_name;
-	int number;
-	sg::Type type;
-};
-
-class MachineType {
-	std::list<sg::SocketType> socket_types;
-};
-
-class ListType : Type {
-	sg::Type element_type;
-	ListType(sg::Type element_type) : element_type(element_type) {}
-};
-
-class BasicType : Type {
-	enum class prim {
+public:
+	enum class Prim {
 	    Integer,
 	    Float,
 	    String,
 	    Bool,
-	    Node
+	    Node,
+	    Name,
+	    Tuple,
+	    List
 	};
-	prim primitive_type;
+
+	std::list<Prim> subtypes;
+	std::map<int, int> edges;
+	void add_subtype(Prim primitive) {
+		subtypes.push_back(primitive);
+	}
+	void add_edge(int, int) {}
 };
+
+class SocketType {
+	sg::Name name;
+	int quantity;
+	sg::Type type;
+public:
+	SocketType(sg::Name name, int quantity, sg::Type type) : name(name), quantity(quantity), type(type) {}
+};
+
+class MachineType {
+	std::list<sg::SocketType> socket_types;
+public:
+	void add_socket_type(sg::SocketType socket_type) {
+		socket_types.push_back(socket_type);
+	}
+};
+
+// class TupleType : Type {
+// 	std::list<sg::Type> self;
+// 	TupleType(std::list<sg::Type> types) {}
+// };
+
+// class ListType : Type {
+// 	sg::Type element_type;
+// 	ListType(sg::Type element_type) : element_type(element_type) {}
+// };
+
+// class BasicType : Type {
+// public:
+// 	enum class Prim {
+// 	    Integer,
+// 	    Float,
+// 	    String,
+// 	    Bool,
+// 	    Node,
+// 	    Name
+// 	};
+// 	Prim primitive_type;
+// };
 
 // class VariableType : Type {
 // 	int index;
 // };
 
-// class TupleType : Type {
-// 	std::list<sg::type> self;
-// };
 
 }
