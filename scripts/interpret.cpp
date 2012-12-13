@@ -27,7 +27,8 @@ int main() {
 	integer_type.add_subtype(sg::Type::Prim::Integer);
 
 	// Create all machines to go inside this ensemble
-	sg::data one(sg::Name("one"), integer_type);
+	sg::Name one_name("one");
+	sg::data one(one_name, integer_type);
 	int one_on_stack = 4;
 
 	sg::Value one_value(one_on_stack, integer_type);
