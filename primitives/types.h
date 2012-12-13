@@ -67,50 +67,28 @@ public:
 		subtypes.push_back(primitive);
 	}
 	void add_edge(int, int) {}
+
+	bool operator == (const sg::Type &other) const {
+		return (subtypes == other.subtypes && edges == other.edges);
+	}
 };
 
+
 class SocketType {
+public:
 	sg::Name name;
 	int quantity;
 	sg::Type type;
-public:
 	SocketType(sg::Name name, int quantity, sg::Type type) : name(name), quantity(quantity), type(type) {}
 };
 
+// A machine type is just a list of socket types
 class MachineType {
-	std::list<sg::SocketType> socket_types;
 public:
+	std::list<sg::SocketType> socket_types;
 	void add_socket_type(sg::SocketType socket_type) {
 		socket_types.push_back(socket_type);
 	}
 };
-
-// class TupleType : Type {
-// 	std::list<sg::Type> self;
-// 	TupleType(std::list<sg::Type> types) {}
-// };
-
-// class ListType : Type {
-// 	sg::Type element_type;
-// 	ListType(sg::Type element_type) : element_type(element_type) {}
-// };
-
-// class BasicType : Type {
-// public:
-// 	enum class Prim {
-// 	    Integer,
-// 	    Float,
-// 	    String,
-// 	    Bool,
-// 	    Node,
-// 	    Name
-// 	};
-// 	Prim primitive_type;
-// };
-
-// class VariableType : Type {
-// 	int index;
-// };
-
 
 }

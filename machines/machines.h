@@ -3,6 +3,7 @@
 #include <list>
 #include <map>
 #include <string>
+#include <iostream>
 
 #include "sigma/machines/naming.h"
 #include "sigma/primitives/values.h"
@@ -25,33 +26,30 @@ Each primitve has a socket structure
 for instance a plus socket might have two inputs, a directory and one output.
 */
 class machine {
-private:
+public:
 	// std::list<sg::Policy> policys;
 	std::map<sg::Name, sg::ValueSocket> value_sockets;
 	// std::map<sg::Name, sg::ValueSocket> variable_sockets;
 	sg::Name name;
-	sg::Type type;
-public:
+	sg::MachineType machine_type;
 	machine(sg::Name name) : name(name) {}
 
 	// Sets the intrinsic value of a socket
+	// TODO: Checks for already set sockets
 	void set_socket(sg::Name socket_name, Value value) {
-		// check machine has a value socket of that name - check type signature
-		if (socket_in_type(socket_name)) {
-			// TODO: Check type is same
-			value_sockets[socket_name].set_value(value);
+		// check machine has a value socket of that name -
+		for (auto &socket_type : machine_type.socket_types) {
+			if (socket_type.name == socket_name) {
+				// Check type signatures match
+				if (socket_type.type == value.type) {
+					value_sockets[socket_name].set_value(value);
+					std::cout << "RIGHT TYPE";
+				}
+				else {
+					std::cout << "WRONG TYPE";
+				}
+			}
 		}
-	}
-
-	// TODO: Implement
-	bool socket_in_type(sg::Name socket_name) {
-		return true;
-	}
-
-	// Checks whether a socket has been initialised
-	bool is_value_socket_init(sg::Name socket_name) {
-		// Check if it exists in 
-		return true;//(value_sockets.find(socket_name) != value_sockets.end());
 	}
 };
 
@@ -74,8 +72,7 @@ class data : public machine {
 public:
 	// t = 	1 value 'd' : Directory +
 	//		unbounded value 'value' : T 
-	data(sg::Name name) : machine(name) {
-		sg::MachineType machine_type;
+	data(sg::Name name, sg::Type value_type) : machine(name) {
 		sg::Type type;
 		type.add_subtype(sg::Type::Prim::Tuple);
 		type.add_subtype(sg::Type::Prim::List);
@@ -89,7 +86,9 @@ public:
 
 		// A tuple is [(name,name,weight)]
 		sg::SocketType directory(sg::Name("directory"), 1, type);
+		sg::SocketType value(sg::Name("value"), 1, value_type);
 		machine_type.add_socket_type(directory);
+		machine_type.add_socket_type(value);
 	}
 };
 

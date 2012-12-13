@@ -22,17 +22,21 @@ int main() {
 	// Q: What are the initial sockets?
 	// sg::ensemble loop("loop"); 
 
-	// Create all machines to go inside this ensemble
-	sg::data one(sg::Name("one"));
-	int one_on_stack = 1;
-	
 	sg::Type integer_type;
 	integer_type.add_subtype(sg::Type::Prim::Integer);
+
+	// Create all machines to go inside this ensemble
+	sg::data one(sg::Name("one"), integer_type);
+	int one_on_stack = 4;
 
 	sg::Value one_value(one_on_stack, integer_type);
 	one.set_socket(sg::Name("value"), one_value);
 
-	// Make value polymorphic, or have void pointers
+	// Q. Where to keep all these values stored?
+	// Q. I need some kind of value constructor
+	// Q. Tests
+	// Q. Dealing with unbounded values
+	// -TODO propoagation function
 
 	// sg::data<int> zero(sg::Name("zero"));
 	// sg::data<int> plus(sg::Name("plus"));
