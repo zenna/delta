@@ -34,7 +34,7 @@ int main() {
 	sg::Value one_value(one_on_stack, integer_type);
 	one.set_socket(sg::Name("value"), one_value);
 
-	sg::print_value_socket(one.get_value_socket(sg::Name("one")));
+	sg::print_value_socket(one.get_value_socket(sg::Name("value")));
 
 	// Q. Where to keep all these values stored?
 	// Q. I need some kind of value constructor
