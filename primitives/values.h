@@ -7,8 +7,9 @@
 namespace sg {
 
 class Value {
-	void * value;
 public:
+
+	void * value;
 	sg::Type type;
 
 	Value() {}

@@ -1,5 +1,6 @@
 /* This file will eventually be the interpreter for sigma machines */
 #include "sigma/machines/machines.h"
+#include "sigma/helpers/io.h"
 
 void run_universe(sg::forward_ensemble &machine) {
 	while (true) {

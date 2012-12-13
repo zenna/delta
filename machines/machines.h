@@ -34,6 +34,10 @@ public:
 	sg::MachineType machine_type;
 	machine(sg::Name name) : name(name) {}
 
+	sg::ValueSocket get_value_socket(sg::Name socket_name) {
+		return value_sockets[socket_name];
+	}
+
 	// Sets the intrinsic value of a socket
 	// TODO: Checks for already set sockets
 	void set_socket(sg::Name socket_name, Value value) {

@@ -1,5 +1,6 @@
 /* This file will eventually be the interpreter for sigma machines */
 #include "sigma/machines/machines.h"
+#include "sigma/helpers/io.h"
 
 // void run_universe(sg::ensemble &machine) {
 // 	while (true) {
@@ -31,6 +32,8 @@ int main() {
 
 	sg::Value one_value(one_on_stack, integer_type);
 	one.set_socket(sg::Name("value"), one_value);
+
+	sg::print_value_socket(one.get_value_socket(sg::Name("one")));
 
 	// Q. Where to keep all these values stored?
 	// Q. I need some kind of value constructor
