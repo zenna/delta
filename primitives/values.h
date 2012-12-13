@@ -1,3 +1,5 @@
+#pragma once
+
 /* Primitive Socket Types */
 #include <string>
 #include "sigma/primitives/types.h"
@@ -5,14 +7,13 @@
 namespace sg {
 
 class Value {
+	void * value;
 
-};
-
-/* This is an identifier for any machine or socket */
-class Name {
 public:
-	std::string data;
-	Name(std::string name) : data(name) {};
+	template <typename T>
+	Value(T &data) {
+		value = &value;
+	}
 };
 
 template <typename T>

@@ -1,18 +1,65 @@
+#pragma once
+
 /* Primitive Socket Types */
+#include "sigma/machines/naming.h"
 
 namespace sg {
+/*
+The type of a machine specifies:
+The number and names of value and variable sockets it posseses.
+For each socket, the type of values it contains, where the type could be a primitive type
+e.g. Int, Node, Float.  Or it could be a compound type such as a list or a tuple.  Or it could be a
+type variable.
+Type variables are used for polymorphic machines, i.e. a single addition machine which can add both floats
+and integers.
 
-/* From a type system the basics we need are
-the ability to constrain which sockets can 
-propagate to other sockets.
-Ideally we would like to type our programs.
-What would it mean for two programs to be type consistent
-Well it imposes some structural constraints on the program*/
+t ->
+    socket_expr
+	| socket_expr * socket_expr
+	| socket_expr + socket_expr
+
+socket_expr -> quantity : s_type
+
+quantity ->
+	| [0-9]* #any number
+	| unbounded name
+	| unbounded
+
+name ->
+	| name-anyword
+
+socket_type	->
+	Integer
+	| Node
+	| Float
+	| String
+	| Bool
+	| [socket_type]
+	| (t_p)
+
+t_p ->
+	T
+	| socket_type, socket_type
+
+The operations we will need to use hte type for
+1. To check if there are any other nodes of a comptable type
+2. For set_socket. a machine dynamically creates sockets according to its type
+*/
 
 // Need a datastructure which makes it fast to test equivalence
 // And can test to see if a type variable is consistent
 class Type {
 
+};
+
+class SocketType {
+	sg::Name socket_name;
+	int number;
+	sg::Type type;
+};
+
+class MachineType {
+	std::list<sg::SocketType> socket_types;
 };
 
 class ListType : Type {
@@ -37,15 +84,6 @@ class BasicType : Type {
 
 // class TupleType : Type {
 // 	std::list<sg::type> self;
-// };
-
-
-
-// class Socket {
-// 	sg::name name;
-// 	sg::type type;
-// 	Belief;
-// 	Weight;
 // };
 
 }

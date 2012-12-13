@@ -7,58 +7,42 @@
 // 	}
 // }
 
-// OK so here's the problem.
-/* We are saying the policy has the capacity to transform and modify values at will
-At some level, one of these machiens just has to be running, step by step. Right? Otherwise, nothing
-wil hap
-
+/*
+Modifies the directory of a source machine to propagate one of the machines sockets to another
 */
-
-void propagate(source_socket, target_socket, double weight) {
-
-}
+// void propagate(sg::machine source, sg::name socket_name, target_socket, double weight) {
+// 	// 1. Check source has directory
+// 	// 2. Check target socket exists
+// 	// 3. Check existing entry
+// 	// 4. Modify directory of source
+// }
 
 int main() {
-	// Choose an ensemble, must be one already present or implicit main
-	// Place a copy of a primtive
-	sg::ensemble loop("loop");
-	sg::ensemble evidence("evidence");
+	// Create an ensemble machine
+	// Q: What are the initial sockets?
+	// sg::ensemble loop("loop"); 
 
-	// Q. should data and value nodes be different,
-	sg::data<int> one("one");
-	sg::data<int> zero("zero");
-	sg::data<int> plus("plus");
+	// Create all machines to go inside this ensemble
+	sg::data<int> one(sg::Name("one"));
+	int one_on_stack = 1;
+	sg::Value one_value(one_on_stack);
+	one.set_socket(sg::Name("value"), one_value);
 
-	// Add the machines to the socket. FIXME: reduce following two lines to one line using c++11
-	std::list<sg::machine *> loop_machines = {&one,&zero,&plus};
-	sg::List<sg::machine *> the_machines(loop_machines);
-	loop.set_socket(sg::Name("machines"), &the_machines);
-	propagate("one:machine", "two:love", 1.0)
+	// Make value polymorphic, or have void pointers
 
-	// Create the evidence formulae	
-	// sg::data<int> one_val("one");
-	// sg::equal equal("equal?");
+	// sg::data<int> zero(sg::Name("zero"));
+	// sg::data<int> plus(sg::Name("plus"));
 
-	// Create a relation for the directory socket
-	// Add an entry which propagates its data to the 0th arg of plus on alpha channel
-	// sg::tuple<sg::name, sg::name, sg::real> d("self:data", "equals?:0", 1.0);
-	// sg::list<sg::tuple> relation(d);
-	// one_val.set_socket("dir",d);
+	// // Setup propagations
+	// propagate(one, "value", plus, "arg0", 1.0);
+	// propagate(two, "value", plus, "arg0", 1.0);
+	// propagate(one, "machine", plus, "arg0", 1.0);
 
-	// // Create a relation for the directory socket
-	// // Add an entry which propagates its data to the 0th arg of plus on alpha channel
-	// sg::tuple<sg::name, sg::name, sg::real> d("self:data", "equals?:1", 1.0);
-	// sg::list<sg::tuple> relation(d);
-	// one.set_socket("dir",d);
+	// // Add the machines to the socket of ensemble. FIXME: reduce following two lines to one line using c++11
+	// std::list<sg::machine *> loop_machines = {&one,&zero,&plus};
+	// sg::List<sg::machine *> the_machines(loop_machines);
+	// loop.set_socket(sg::Name("machines"), &the_machines);
+	// propagate("one:machine", "two:love", 1.0)
 
-	// // Create the evidence ensemble
-	// evidence.add_machines(one_val,one,equal);
-
-	// // Propagate evidence to loop
-	// sg::tuple<sg::name, sg::name, sg::real> d("self:machine", "loop:1", 1.0);
-	// sg::list<sg::tuple> relation(d);
-	// evidence.set_socket("dir",d);
-
-	// // Ok so what is going to make this thing run
 	// run_universe(loop);
 }
