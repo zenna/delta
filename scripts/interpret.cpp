@@ -21,7 +21,7 @@ Modifies the directory of a source machine to propagate one of the machines sock
 int main() {
 	// Create an ensemble machine
 	// Q: What are the initial sockets?
-	// sg::ensemble loop("loop"); 
+	// sg::ensemble loop("loop");
 
 	sg::Type integer_type;
 	integer_type.add_subtype(sg::Type::Prim::Integer);
@@ -30,12 +30,12 @@ int main() {
 	sg::Name one_name("one");
 	std::cout << "ok juices flowing" << one_name << std::endl;
 	sg::data one(one_name, integer_type);
-	int one_on_stack = 4;
+	int one_on_stack = 8;
 
 	sg::Value one_value(one_on_stack, integer_type);
 	one.set_socket(sg::Name("value"), one_value);
 
-	sg::print_value_socket(one.get_value_socket(sg::Name("value")));
+	// sg::print_value_socket(one.get_value_socket(sg::Name("value")));
 
 	// Q. Where to keep all these values stored?
 	// Q. I need some kind of value constructor

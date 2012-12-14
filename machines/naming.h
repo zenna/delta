@@ -13,16 +13,19 @@ public:
 	bool operator== (const sg::Name &other) const {
 		return (data == other.data);
 	}
-
 	bool operator< (const sg::Name &other) const {
 		// FIXME
-		return true;
+		return (data < other.data);
 	}
 
-	std::ostream & operator<< (std::ostream &out) {
-		out << data;
-		return out;
-	}
+	friend std::ostream & operator<< (std::ostream &out, const sg::Name &name);
 };
+
+std::ostream & operator<< (std::ostream &out, const sg::Name &name) {
+	out << name.data;
+	return out;
+}
+
+
 
 }

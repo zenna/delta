@@ -8,6 +8,8 @@
 #include "sigma/machines/naming.h"
 #include "sigma/primitives/values.h"
 #include "sigma/primitives/types.h"
+#include "sigma/helpers/io.h"
+
 
 
 namespace sg {
@@ -15,8 +17,8 @@ namespace sg {
 class ValueSocket {
 public:
 	sg::Value value;
-	void set_value(sg::Value value) {
-		value = value;
+	void set_value(sg::Value value_) {
+		value = value_;
 	}
 };
 
@@ -35,12 +37,9 @@ public:
 	machine(sg::Name name) : name(name) {}
 
 	sg::ValueSocket get_value_socket(sg::Name socket_name) {
-		for (auto &socket : value_sockets) {
-			// std::cout << socket.first << std::endl;
-		}
 		auto value = value_sockets.find(socket_name);
 		if (value == value_sockets.end()) {
-			std::cout << "Couldn't find it eh" << std::endl;
+			std::cout << "Couldn't find value" << std::endl;
 		}
 		// std::cout << "Socket name being to is " << value->right << std::endl;
 		return value_sockets[socket_name];
@@ -49,6 +48,7 @@ public:
 	// Sets the intrinsic value of a socket
 	// TODO: Checks for already set sockets
 	void set_socket(sg::Name socket_name, Value value) {
+
 		// check machine has a value socket of that name -
 		for (auto &socket_type : machine_type.socket_types) {
 			if (socket_type.name == socket_name) {
@@ -62,6 +62,7 @@ public:
 				}
 			}
 		}
+		sg::print_value_socket(value_sockets[socket_name]);
 	}
 };
 
