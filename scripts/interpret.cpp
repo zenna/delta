@@ -28,6 +28,7 @@ int main() {
 
 	// Create all machines to go inside this ensemble
 	sg::Name one_name("one");
+	std::cout << "ok juices flowing" << one_name << std::endl;
 	sg::data one(one_name, integer_type);
 	int one_on_stack = 4;
 

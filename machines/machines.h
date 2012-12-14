@@ -35,6 +35,14 @@ public:
 	machine(sg::Name name) : name(name) {}
 
 	sg::ValueSocket get_value_socket(sg::Name socket_name) {
+		for (auto &socket : value_sockets) {
+			// std::cout << socket.first << std::endl;
+		}
+		auto value = value_sockets.find(socket_name);
+		if (value == value_sockets.end()) {
+			std::cout << "Couldn't find it eh" << std::endl;
+		}
+		// std::cout << "Socket name being to is " << value->right << std::endl;
 		return value_sockets[socket_name];
 	}
 
