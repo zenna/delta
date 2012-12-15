@@ -18,14 +18,7 @@ public:
 	Value(T &data, sg::Type type) : type(type) {
 		value = &data;
 	}
-
-	// friend std::ostream & operator<< (std::ostream &out, const sg::Value &value);
 };
-
-// std::ostream & operator<< (std::ostream &out, const sg::Value &value) {
-// 	// Add printing of types
-// 	out << 
-// }
 
 template <typename T>
 class List : public Value {

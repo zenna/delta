@@ -2,21 +2,16 @@
 #include "sigma/machines/machines.h"
 #include "sigma/helpers/io.h"
 
-// void run_universe(sg::ensemble &machine) {
-// 	while (true) {
-// 		machine.do_step();
-// 	}
-// }
 
 /*
-Modifies the directory of a source machine to propagate one of the machines sockets to another
+// Q. Where to keep all these values stored?
+// In the parent ensemble
+
+// Q. I need some kind of value constructor
+// Q. Tests
+// Q. Dealing with unbounded values
+// -TODO propoagation function
 */
-// void propagate(sg::machine source, sg::name socket_name, target_socket, double weight) {
-// 	// 1. Check source has directory
-// 	// 2. Check target socket exists
-// 	// 3. Check existing entry
-// 	// 4. Modify directory of source
-// }
 
 int main() {
 	// Create an ensemble machine
@@ -27,23 +22,25 @@ int main() {
 	integer_type.add_subtype(sg::Type::Prim::Integer);
 
 	// Create all machines to go inside this ensemble
-	sg::Name one_name("one");
-	std::cout << "ok juices flowing" << one_name << std::endl;
-	sg::data one(one_name, integer_type);
-	int one_on_stack = 8;
+	sg::data one(sg::Name("one"), integer_type);
+	int one_on_stack = 1;
 
 	sg::Value one_value(one_on_stack, integer_type);
 	one.set_socket(sg::Name("value"), one_value);
 
-	// sg::print_value_socket(one.get_value_socket(sg::Name("value")));
+	// Create all machines to go inside this ensemble
+	sg::data zero(sg::Name("zero"), integer_type);
+	int zero_on_stack = 0;
 
-	// Q. Where to keep all these values stored?
-	// Q. I need some kind of value constructor
-	// Q. Tests
-	// Q. Dealing with unbounded values
-	// -TODO propoagation function
+	sg::Value zero_value(zero_on_stack, integer_type);
+	zero.set_socket(sg::Name("value"), zero_value);
 
-	// sg::data<int> zero(sg::Name("zero"));
+	// TODO: Set the directories of these machiens
+	// Add a functional machine
+	sg::integerAdd add(sg::Name("add"));
+
+	// RUN!!!
+
 	// sg::data<int> plus(sg::Name("plus"));
 
 	// // Setup propagations

@@ -10,8 +10,6 @@
 #include "sigma/primitives/types.h"
 #include "sigma/helpers/io.h"
 
-
-
 namespace sg {
 
 class ValueSocket {
@@ -27,7 +25,7 @@ There are a set of primitive machines.
 Each primitve has a socket structure
 for instance a plus socket might have two inputs, a directory and one output.
 */
-class machine {
+class Machine {
 public:
 	// std::list<sg::Policy> policys;
 	std::map<sg::Name, sg::ValueSocket> value_sockets;
@@ -41,7 +39,6 @@ public:
 		if (value == value_sockets.end()) {
 			std::cout << "Couldn't find value" << std::endl;
 		}
-		// std::cout << "Socket name being to is " << value->right << std::endl;
 		return value_sockets[socket_name];
 	}
 
@@ -55,14 +52,13 @@ public:
 				// Check type signatures match
 				if (socket_type.type == value.type) {
 					value_sockets[socket_name].set_value(value);
-					std::cout << "RIGHT TYPE";
+					std::cout << "Right Type";
 				}
 				else {
 					std::cout << "WRONG TYPE";
 				}
 			}
 		}
-		sg::print_value_socket(value_sockets[socket_name]);
 	}
 };
 
@@ -81,12 +77,38 @@ public:
 
 // The uncertain values
 // Has only two sockets, data and directory
-class data : public machine {
+class Data : public Machine {
 public:
 	// t = 	1 value 'd' : Directory +
 	//		unbounded value 'value' : T 
-	data(sg::Name name, sg::Type value_type) : machine(name) {
-		sg::Type type;
+	data(sg::Name name, sg::Type value_type) : Machine(name) {
+		sg::Type dir_type;
+		type.add_subtype(sg::Type::Prim::Tuple);
+		type.add_subtype(sg::Type::Prim::List);
+		type.add_subtype(sg::Type::Prim::Name);
+		type.add_subtype(sg::Type::Prim::Name);
+		type.add_subtype(sg::Type::Prim::Float);
+		type.add_edge(0,1);
+		type.add_edge(1,2);
+		type.add_edge(1,3);
+		type.add_edge(1,4);
+
+		// A tuple is [(name,name,weight)]
+		sg::SocketType directory(sg::Name("directory"), 1, dir_type);
+		sg::SocketType value(sg::Name("value"), 1, value_type);
+		machine_type.add_socket_type(directory);
+		machine_type.add_socket_type(value);
+	}
+};
+
+// The uncertain values
+// Has only two sockets, data and directory
+class IntegerAdd : public Machine {
+public:
+	// t = 	1 value 'd' : Directory +
+	//		unbounded value 'value' : T 
+	func(sg::Name name) : Machine(name) {
+		sg::Type dir_type;
 		type.add_subtype(sg::Type::Prim::Tuple);
 		type.add_subtype(sg::Type::Prim::List);
 		type.add_subtype(sg::Type::Prim::Name);
@@ -99,9 +121,17 @@ public:
 
 		// A tuple is [(name,name,weight)]
 		sg::SocketType directory(sg::Name("directory"), 1, type);
-		sg::SocketType value(sg::Name("value"), 1, value_type);
+
+		sg::Type integer_type;
+		integer_type.add_subtype(sg::Type::Prim::Integer);
+		sg::SocketType arg0(sg::Name("arg0"), 1, integer_type);
+		sg::SocketType arg1(sg::Name("arg1"), 1, integer_type);
+		sg::SocketType out0(sg::Name("out0"), 1, integer_type);
+
 		machine_type.add_socket_type(directory);
-		machine_type.add_socket_type(value);
+		machine_type.add_socket_type(arg0);
+		machine_type.add_socket_type(arg1);
+		machine_type.add_socket_type(out0);
 	}
 };
 
