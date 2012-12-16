@@ -22,6 +22,15 @@ public:
 	}
 };
 
+class Tuple : public Value {
+	template <typename T>
+	Value(T data, sg::Type type) : type(type) {
+		T* data_ptr = new T;
+		*data_ptr = data;
+		value = data_ptr;
+	}
+};
+
 class List : public Value {
 public:
 	std::list<sg::Value *> data;

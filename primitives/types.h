@@ -63,6 +63,11 @@ public:
 
 	std::list<Prim> subtypes;
 	std::map<int, int> edges;
+
+	Type(Prim primitive) {
+		subtypes.push_back(primitive);
+	}
+
 	void add_subtype(Prim primitive) {
 		subtypes.push_back(primitive);
 	}

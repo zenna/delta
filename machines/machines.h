@@ -12,12 +12,22 @@
 
 namespace sg {
 
+// A vaue socket stores a value.  This value
+// could be a constant or from an external source
+// It cannot be propagated to, only from.
 class ValueSocket {
 public:
 	sg::Value value;
 	void set_value(sg::Value value_) {
 		value = value_;
 	}
+};
+
+// A variable socket can be propagated to and stores
+// Samples from its distribution
+class VariableSocket {
+public:
+	std::map<sg::Value, int> samples;
 };
 
 /* Parent machine class
@@ -29,7 +39,7 @@ class Machine {
 public:
 	// std::list<sg::Policy> policys;
 	std::map<sg::Name, sg::ValueSocket> value_sockets;
-	// std::map<sg::Name, sg::ValueSocket> variable_sockets;
+	std::map<sg::Name, sg::VariableSocket> variable_sockets;
 	sg::Name name;
 	sg::MachineType machine_type;
 	Machine(sg::Name name) : name(name) {}	
