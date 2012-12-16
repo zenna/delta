@@ -32,12 +32,7 @@ public:
 
 /* Parent machine class
 There are a set of primitive machines.
-Each primitve has a socket structure
-for instance a plus socket might have two inputs, a directory and one output.
-*/
-class Machine {
-public:
-	// std::list<sg::Policy> policys;
+Each primitve has a sock :Policy> policys;
 	std::map<sg::Name, sg::ValueSocket> value_sockets;
 	std::map<sg::Name, sg::VariableSocket> variable_sockets;
 	sg::Name name;

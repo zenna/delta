@@ -39,10 +39,10 @@ int main() {
 	sg::Value zero_value(0,integer_type);
 	zero.set_socket(sg::Name("value"), one_value);
 
-	print_value_socket(one.get_value_socket(sg::Name("value")));
-
 	// Let's create the data for a directory
 	setup_coupling(one);
+
+	// 
 	// TODO: Set the directories of these machiens
 	// Add a functional machine
 	// sg::integerAdd add(sg::Name("add"));
