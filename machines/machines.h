@@ -32,7 +32,7 @@ public:
 	// std::map<sg::Name, sg::ValueSocket> variable_sockets;
 	sg::Name name;
 	sg::MachineType machine_type;
-	machine(sg::Name name) : name(name) {}
+	Machine(sg::Name name) : name(name) {}	
 
 	sg::ValueSocket get_value_socket(sg::Name socket_name) {
 		auto value = value_sockets.find(socket_name);
@@ -54,7 +54,7 @@ public:
 					value_sockets[socket_name].set_value(value);
 					std::cout << "Right Type";
 				}
-				else {
+				else { 
 					std::cout << "WRONG TYPE";
 				}
 			}
@@ -81,17 +81,17 @@ class Data : public Machine {
 public:
 	// t = 	1 value 'd' : Directory +
 	//		unbounded value 'value' : T 
-	data(sg::Name name, sg::Type value_type) : Machine(name) {
+	Data(sg::Name name, sg::Type value_type) : Machine(name) {
 		sg::Type dir_type;
-		type.add_subtype(sg::Type::Prim::Tuple);
-		type.add_subtype(sg::Type::Prim::List);
-		type.add_subtype(sg::Type::Prim::Name);
-		type.add_subtype(sg::Type::Prim::Name);
-		type.add_subtype(sg::Type::Prim::Float);
-		type.add_edge(0,1);
-		type.add_edge(1,2);
-		type.add_edge(1,3);
-		type.add_edge(1,4);
+		dir_type.add_subtype(sg::Type::Prim::Tuple);
+		dir_type.add_subtype(sg::Type::Prim::List);
+		dir_type.add_subtype(sg::Type::Prim::Name);
+		dir_type.add_subtype(sg::Type::Prim::Name);
+		dir_type.add_subtype(sg::Type::Prim::Float);
+		dir_type.add_edge(0,1);
+		dir_type.add_edge(1,2);
+		dir_type.add_edge(1,3);
+		dir_type.add_edge(1,4);
 
 		// A tuple is [(name,name,weight)]
 		sg::SocketType directory(sg::Name("directory"), 1, dir_type);
@@ -103,36 +103,36 @@ public:
 
 // The uncertain values
 // Has only two sockets, data and directory
-class IntegerAdd : public Machine {
-public:
-	// t = 	1 value 'd' : Directory +
-	//		unbounded value 'value' : T 
-	func(sg::Name name) : Machine(name) {
-		sg::Type dir_type;
-		type.add_subtype(sg::Type::Prim::Tuple);
-		type.add_subtype(sg::Type::Prim::List);
-		type.add_subtype(sg::Type::Prim::Name);
-		type.add_subtype(sg::Type::Prim::Name);
-		type.add_subtype(sg::Type::Prim::Float);
-		type.add_edge(0,1);
-		type.add_edge(1,2);
-		type.add_edge(1,3);
-		type.add_edge(1,4);
+// class IntegerAdd : public Machine {
+// public:
+// 	// t = 	1 value 'd' : Directory +
+// 	//		unbounded value 'value' : T 
+// 	func(sg::Name name) : Machine(name) {
+// 		sg::Type dir_type;
+// 		type.add_subtype(sg::Type::Prim::Tuple);
+// 		type.add_subtype(sg::Type::Prim::List);
+// 		type.add_subtype(sg::Type::Prim::Name);
+// 		type.add_subtype(sg::Type::Prim::Name);
+// 		type.add_subtype(sg::Type::Prim::Float);
+// 		type.add_edge(0,1);
+// 		type.add_edge(1,2);
+// 		type.add_edge(1,3);
+// 		type.add_edge(1,4);
 
-		// A tuple is [(name,name,weight)]
-		sg::SocketType directory(sg::Name("directory"), 1, type);
+// 		// A tuple is [(name,name,weight)]
+// 		sg::SocketType directory(sg::Name("directory"), 1, type);
 
-		sg::Type integer_type;
-		integer_type.add_subtype(sg::Type::Prim::Integer);
-		sg::SocketType arg0(sg::Name("arg0"), 1, integer_type);
-		sg::SocketType arg1(sg::Name("arg1"), 1, integer_type);
-		sg::SocketType out0(sg::Name("out0"), 1, integer_type);
+// 		sg::Type integer_type;
+// 		integer_type.add_subtype(sg::Type::Prim::Integer);
+// 		sg::SocketType arg0(sg::Name("arg0"), 1, integer_type);
+// 		sg::SocketType arg1(sg::Name("arg1"), 1, integer_type);
+// 		sg::SocketType out0(sg::Name("out0"), 1, integer_type);
 
-		machine_type.add_socket_type(directory);
-		machine_type.add_socket_type(arg0);
-		machine_type.add_socket_type(arg1);
-		machine_type.add_socket_type(out0);
-	}
-};
+// 		machine_type.add_socket_type(directory);
+// 		machine_type.add_socket_type(arg0);
+// 		machine_type.add_socket_type(arg1);
+// 		machine_type.add_socket_type(out0);
+// 	}
+// };
 
 }
