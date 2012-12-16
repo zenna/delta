@@ -20,12 +20,10 @@ public:
 	}
 };
 
-template <typename T>
 class List : public Value {
 public:
-	sg::Type ListType;
-	std::list<T> data;
-	List(std::list<T> list_of_values) : data(list_of_values) {}
+	std::list<sg::Value *> data;
+	List(std::list<Value *> list_of_values) : data(list_of_values) {}
 };
 
 }

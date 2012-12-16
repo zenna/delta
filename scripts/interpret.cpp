@@ -5,11 +5,12 @@
 
 /*
 // Q. Where to keep all these values stored?
-// In the parent ensemble
+Value, value socket, ensemble, just some big 
 
 // Q. I need some kind of value constructor
 // Q. Tests
 // Q. Dealing with unbounded values
+
 // -TODO propoagation function
 */
 
@@ -22,14 +23,14 @@ int main() {
 	integer_type.add_subtype(sg::Type::Prim::Integer);
 
 	// Create all machines to go inside this ensemble
-	sg::data one(sg::Name("one"), integer_type);
+	sg::Data one(sg::Name("one"), integer_type);
 	int one_on_stack = 1;
 
 	sg::Value one_value(one_on_stack, integer_type);
 	one.set_socket(sg::Name("value"), one_value);
 
 	// Create all machines to go inside this ensemble
-	sg::data zero(sg::Name("zero"), integer_type);
+	sg::Data zero(sg::Name("zero"), integer_type);
 	int zero_on_stack = 0;
 
 	sg::Value zero_value(zero_on_stack, integer_type);
