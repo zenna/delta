@@ -2,6 +2,20 @@
 
 namespace sg {
 
+sg::Type make_directory_type() {
+	sg::Type dir_type;
+	dir_type.add_subtype(sg::Type::Prim::Tuple);
+	dir_type.add_subtype(sg::Type::Prim::List);
+	dir_type.add_subtype(sg::Type::Prim::Name);
+	dir_type.add_subtype(sg::Type::Prim::Name);
+	dir_type.add_subtype(sg::Type::Prim::Float);
+	dir_type.add_edge(0,1);
+	dir_type.add_edge(1,2);
+	dir_type.add_edge(1,3);
+	dir_type.add_edge(1,4);
+	return dir_type;
+}
+
 // Does the machine have a value socket of a particular name
 bool has_machine_value_socket(sg::Machine const &machine, sg::Name socket_name) {
 
@@ -30,11 +44,10 @@ void setup_coupling(sg::Machine &source, sg::Name socket_name,
 	}
 }
 
-// void run_universe(sg::ensemble &machine) {
-// 	while (true) {
-// 		machine.do_step();
-// 	}
-// }
-
-
+void run_universe(sg::SampleEnsemble &machine) {
+	while (true) {
+		machine.execute_policy();
+	}
 }
+
+}	
