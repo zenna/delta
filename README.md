@@ -2,20 +2,12 @@
 
 ### Dependencies
 * CMake
+* C++11 (suggest latest release clang/llvm from source, or g++--4.6
 
 ### How to build
 Make a build directory (preferably outside the source code directory)
 
-	mkdir ~/example/
-	cd ~/example/
-	cmake REPOSITORY_ROOT
+	mkdir ~/sigmabuild/
+	cd ~/sigmabuild/
+	cmake REPOSITORY_ROOT -D CMAKE_BUILD_TYPE=Debug -D CMAKE_CXX_COMPILER=clang++
 	make
-
-### emcbuild
-
-	mkdir -p ~/builds/infons-emscripten
-	cd ~/builds/infons-emscripten
-	emcc ~/repos/infons/tests/and.cpp -c -std=gnu++0x  -I ~/repos
-	emcc and.o  -o hello.html
-
-	
