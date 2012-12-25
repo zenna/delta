@@ -27,7 +27,8 @@ public:
 // Samples from its distribution
 class VariableSocket {
 public:
-	std::map<sg::Value, int> samples;
+	std::vector<sg::Value> samples;
+	std::vector<sg::Value> prev_samples;
 };
 
 /* Parent machine class
@@ -142,6 +143,9 @@ public:
 };
 
 // This machine takes nodes into its sockets and performs sampe based propagation
+// Proposal takes as input, Integer for num samplee, 
+// Has one socket for a machine.
+
 class SampleEnsemble : public Machine {
 public:
 	// The policy for execute machines looks at the list of machines in its socket

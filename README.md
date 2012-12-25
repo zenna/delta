@@ -9,5 +9,5 @@ Make a build directory (preferably outside the source code directory)
 
 	mkdir ~/sigmabuild/
 	cd ~/sigmabuild/
-	cmake REPOSITORY_ROOT -D CMAKE_BUILD_TYPE=Debug -D CMAKE_CXX_COMPILER=clang++
+	cmake  -D CMAKE_BUILD_TYPE=Debug -D CMAKE_CXX_COMPILER=clang++ REPOSITORY_ROOT
 	make
