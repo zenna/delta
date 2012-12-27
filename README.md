@@ -2,7 +2,7 @@
 
 ### Dependencies
 * CMake
-* C++11 (suggest latest release clang/llvm from source, or g++--4.6
+* C++11 (suggest latest release clang/llvm from source with libc++, or g++--4.6
 
 ### How to build
 Make a build directory (preferably outside the source code directory)

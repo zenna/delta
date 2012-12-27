@@ -18,31 +18,65 @@ sg::Type make_directory_type() {
     return dir_type;
 }
 
-// Does the machine have a value socket of a particular name
-bool has_machine_value_socket(sg::Machine const &machine, sg::Name socket_name) {
-
+/**
+ @brief  Check if machine has socket of given name
+ */
+bool has_machine_socket(sg::Machine const &machine, sg::Name socket_name) const {
+    if (machine.get_socket(socket_name) == sg::INVALID) {
+        return false;
+    }
+    else {
+        return true;
+    }
 }
 
-// This function will modify the directory value_socket of a machine
-// To cause it to propagate to another socket
-void setup_coupling(sg::Machine &source, sg::Name socket_name,
-                sg::Name target_machine, target_socket, double weight) {
+/**
+ @brief  Check if sockets are the same type
+ */
+bool same_type(sg::Socket const &socket_1, sg::Socket const &socket_2) const {
+    return true;
+}
+
+/**
+ @brief  Modify directory socket to propagate to another
+ */
+void setup_coupling(sg::Machine &src_machine, sg::Name src_socket_name,
+                sg::Name dst_machine, sg::Name dst_socket_name, double weight) {
     // Sanity: check directory and dst socket exist
-    bool source_has_value_directory = has_machine_value_socket(source, sg::Name("directory")); 
-    bool target_has_socket = has_machine_value_socket(target, target_socket);
-    if (source_has_value_directory && target_socket) {
-        src_socket = src_machine.get_socket(socket_name);
-        dst_socket = dst_machine.get_socket(socket_name);
+    bool src_has_dir = has_machine_socket(src_machine, sg::Name("directory"));
+    bool src_socket_exists = has_machine_socket(src_machine, src_socket_name);
+    bool dst_socket_exists = has_machine_socket(dst_machine, dst_socket_name);
+
+    if (src_has_dir && src_socket_exists && dst_socket_exists) {
+        src_socket = src_machine.get_socket(src_socket_name);
+        dst_socket = dst_machine.get_socket(dst_socket_name);
         
         // If types match, modify create value
-        if (type_consistent(src_socket, dst_socket)) {
-            sg::Value source_name(sg::Name("one"), name_type);
-            sg::Value target_name(sg::Name("zero"), name_type);
-            sg::Value weight(1.0, double_type);
-            std::list<Value *> dir_entry_list = {source_name, target_name, weight};
-            sg::Tuple dir_entry(dir_entry_list, sg::Type(sg::Type::Prim::Tuple));
-            src_socket.set_socket();
+        if (same_type(src_socket, dst_socket)) {
+            sg::Value src_name_value(src_socket_name, name_type);
+            sg::Value dst_name_value(dst_socket_name, name_type);
+            sg::Value weight_value(weight, double_type);
+            std::list<Value *> dir_entry_list = {&src_name_value, &dst_name_value, &weight_value};
+            
+            sg::Tuple dir_entry;
+            dir_tuole.push_value(src_name_value);
+            dir_entry.push_value(dst_name_value);
+            dir_entry.push_value(weight_value);
+
+            // TODO: Check if there is an existing directory
+            // Now just override
+            sg::List list_entry;
+            list_entry.push_value(dir_entry);
+
+            src_socket.set(list_entry);
         }
+        else {
+            sg::output("Error, inconsistent types when coupling");
+        }
+    }
+    else {
+        sg::output("Error coupling - src_has_dir, src_socket_exists, dst_socket_exists = ");
+        sg::output(src_has_dir, src_socket_exists, dst_socket_exists);
     }
 }
 
@@ -76,11 +110,17 @@ void propagate_samples(std::list<sg::Machine*> machines, int num_samples,
             // 2. Execute policy for samples
         }
 
+        // Build projectin_to_me by scanning directories
         projecting_to_me.clear();
         for (auto machine : machines) {
-            // Do propagation: i.e. build projecting to me,
+            auto directory = machine.get_socket(sg::Name("directory"));
+            if (directory != sg::INVALID) {
 
-            
+            }
+            // Dealing with non_existant sockets, either
+            // 1. Lemon style- sg::missing
+            // 2. exception
+            // 3. 
         }
     }
 }
