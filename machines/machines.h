@@ -2,6 +2,7 @@
 /* Machines */
 #include <list>
 #include <map>
+#include <vector>
 #include <string>
 #include <iostream>
 
@@ -9,8 +10,24 @@
 #include "sigma/primitives/values.h"
 #include "sigma/primitives/types.h"
 #include "sigma/helpers/io.h"
+// #include "sigma/helpers/propagation.h"
+
 
 namespace sg {
+
+sg::Type make_dir_type() {
+    sg::Type dir_type;
+    dir_type.add_subtype(sg::Type::Prim::Tuple);
+    dir_type.add_subtype(sg::Type::Prim::List);
+    dir_type.add_subtype(sg::Type::Prim::Name);
+    dir_type.add_subtype(sg::Type::Prim::Name);
+    dir_type.add_subtype(sg::Type::Prim::Float);
+    dir_type.add_edge(0,1);
+    dir_type.add_edge(1,2);
+    dir_type.add_edge(1,3);
+    dir_type.add_edge(1,4);
+    return dir_type;
+}
 
 // A variable socket can be propagated to and stores
 // Samples from its distribution
@@ -24,11 +41,14 @@ public:
     }
 };
 
-/* Parent machine class
-There are a set of primitive machines.
-Each primitve has a socket structure
-for instance a plus socket might have two inputs, a directory and one output.
-*/
+
+/**
+ @brief  Base Machine Class
+
+ There are a set of primitive machines.
+ Each primitve has a socket structure
+ for instance a plus socket might have two inputs, a directory and one output.
+ */
 class Machine {
 public:
     // A machine is tuple (S_v, S_var, X, T, Pi)
@@ -39,12 +59,12 @@ public:
     Machine(sg::Name name) : name(name) {}  
 
     // Return a socket by its name
-    sg::ValueSocket get_socket(sg::Name socket_name) const {
+    sg::VariableSocket get_socket(sg::Name socket_name) const {
         auto socket = variable_sockets.find(socket_name);
         if (socket == variable_sockets.end()) {
             std::cout << "Couldn't find value" << std::endl;
         }
-        return variable_sockets[socket_name];
+        return this->variable_sockets[socket_name];
     }
 
     /**
@@ -58,7 +78,7 @@ public:
             if (socket_type.name == socket_name) {
                 // Check type signatures match
                 if (socket_type.type == value.type) {
-                    value_sockets[socket_name].set_value(value);
+                    variable_sockets[socket_name].set_value(value);
                     std::cout << "Right Type";
                 }
                 else { 
@@ -69,7 +89,7 @@ public:
     }
 
     // executes the policy, i.e. performs a single timestep
-    void execute_policy() = 0;
+    // void execute_policy() = 0;
 };
 
 
@@ -92,7 +112,7 @@ public:
     // t =  1 value 'd' : Directory +
     //      unbounded value 'value' : T 
     Data(sg::Name name, sg::Type value_type) : Machine(name) {
-        sg::Type dir_type = sg::make_director_type();
+        sg::Type dir_type = sg::make_dir_type();
 
         // A tuple is [(name,name,weight)]
         sg::SocketType directory(sg::Name("directory"), 1, dir_type);
@@ -109,10 +129,10 @@ public:
     // t =  1 value 'd' : Directory +
     //      unbounded value 'value' : T 
     IntegerAdd(sg::Name name) : Machine(name) {
-        sg::Type dir_type = sg::make_director_type();
+        sg::Type dir_type = sg::make_dir_type();
 
         // A tuple is [(name,name,weight)]
-        sg::SocketType directory(sg::Name("directory"), 1, type);
+        sg::SocketType directory(sg::Name("directory"), 1, dir_type);
 
         sg::Type integer_type;
         integer_type.add_subtype(sg::Type::Prim::Integer);
@@ -128,11 +148,11 @@ public:
 
     // Don't execute
     void execute_policy() {
-        a = variable_sockets[sg::Name("arg0")];
-        b = variable_sockets[sg::Name("arg1")];
-        o = int(a.value.value) + int(b.value.value); 
-        out = variable_sockets[sg::Name("out1")];
-        out.value = o;
+        // a = variable_sockets[sg::Name("arg0")];
+        // b = variable_sockets[sg::Name("arg1")];
+        // o = int(a.value.value) + int(b.value.value); 
+        // out = variable_sockets[sg::Name("out1")];
+        // out.value = o;
     }
 };
 
@@ -154,8 +174,8 @@ public:
 
     // t =  1 value 'd' : Directory +
     //      unbounded value 'value' : T 
-    Data(sg::Name name, sg::Type value_type) : Machine(name) {
-        sg::Type dir_type = sg::make_director_type();
+    SampleEnsemble(sg::Name name, sg::Type value_type) : Machine(name) {
+        sg::Type dir_type = sg::make_dir_type();
 
         // A tuple is [(name,name,weight)]
         sg::SocketType directory(sg::Name("directory"), 1, dir_type);
@@ -166,13 +186,13 @@ public:
 };
 
 
-class Policy {
-public:
-    // The actual function, must take asinput the number of points
-    // 
-    primitive_function(list<Values> inputs, list<Values> outputs)
-    std::map<int,sg::Name> mapping;
-};
+// class Policy {
+// public:
+//     // The actual function, must take asinput the number of points
+//     // 
+//     primitive_function(list<Values> inputs, list<Values> outputs)
+//     std::map<int,sg::Name> mapping;
+// };
 
 
 }

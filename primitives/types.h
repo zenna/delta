@@ -53,6 +53,7 @@ public:
 	enum class Prim {
 	    Integer,
 	    Float,
+	    Double,
 	    String,
 	    Bool,
 	    Node,
@@ -63,6 +64,8 @@ public:
 
 	std::list<Prim> subtypes;
 	std::map<int, int> edges;
+
+	Type() {}
 
 	Type(Prim primitive) {
 		subtypes.push_back(primitive);

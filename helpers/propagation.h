@@ -1,27 +1,15 @@
 #pragma once
 #include <vector>
-#include <pair>
+#include <map>
+#include "sigma/machines/machines.h"
 
 namespace sg {
 
-sg::Type make_directory_type() {
-    sg::Type dir_type;
-    dir_type.add_subtype(sg::Type::Prim::Tuple);
-    dir_type.add_subtype(sg::Type::Prim::List);
-    dir_type.add_subtype(sg::Type::Prim::Name);
-    dir_type.add_subtype(sg::Type::Prim::Name);
-    dir_type.add_subtype(sg::Type::Prim::Float);
-    dir_type.add_edge(0,1);
-    dir_type.add_edge(1,2);
-    dir_type.add_edge(1,3);
-    dir_type.add_edge(1,4);
-    return dir_type;
-}
 
 /**
  @brief  Check if machine has socket of given name
  */
-bool has_machine_socket(sg::Machine const &machine, sg::Name socket_name) const {
+bool has_machine_socket(sg::Machine const &machine, sg::Name socket_name) {
     if (machine.get_socket(socket_name) == sg::INVALID) {
         return false;
     }
@@ -33,7 +21,8 @@ bool has_machine_socket(sg::Machine const &machine, sg::Name socket_name) const 
 /**
  @brief  Check if sockets are the same type
  */
-bool same_type(sg::Socket const &socket_1, sg::Socket const &socket_2) const {
+bool same_type(sg::VariableSocket const &socket_1, sg::VariableSocket const &socket_2) {
+    // TODO: Implement this
     return true;
 }
 
@@ -41,25 +30,26 @@ bool same_type(sg::Socket const &socket_1, sg::Socket const &socket_2) const {
  @brief  Modify directory socket to propagate to another
  */
 void setup_coupling(sg::Machine &src_machine, sg::Name src_socket_name,
-                sg::Name dst_machine, sg::Name dst_socket_name, double weight) {
+                sg::Machine dst_machine, sg::Name dst_socket_name, double weight) {
     // Sanity: check directory and dst socket exist
     bool src_has_dir = has_machine_socket(src_machine, sg::Name("directory"));
     bool src_socket_exists = has_machine_socket(src_machine, src_socket_name);
     bool dst_socket_exists = has_machine_socket(dst_machine, dst_socket_name);
 
     if (src_has_dir && src_socket_exists && dst_socket_exists) {
-        src_socket = src_machine.get_socket(src_socket_name);
-        dst_socket = dst_machine.get_socket(dst_socket_name);
+        sg::VariableSocket src_socket = src_machine.get_socket(src_socket_name);
+        sg::VariableSocket dst_socket = dst_machine.get_socket(dst_socket_name);
         
         // If types match, modify create value
         if (same_type(src_socket, dst_socket)) {
+        	sg::Type name_type(sg::Type::Prim::Name);
             sg::Value src_name_value(src_socket_name, name_type);
             sg::Value dst_name_value(dst_socket_name, name_type);
             sg::Value weight_value(weight, double_type);
             std::list<Value *> dir_entry_list = {&src_name_value, &dst_name_value, &weight_value};
             
             sg::Tuple dir_entry;
-            dir_tuole.push_value(src_name_value);
+            dir_entry.push_value(src_name_value);
             dir_entry.push_value(dst_name_value);
             dir_entry.push_value(weight_value);
 
@@ -90,7 +80,7 @@ void setup_coupling(sg::Machine &src_machine, sg::Name src_socket_name,
 template <typename PRNG>
 void propagate_samples(std::list<sg::Machine*> machines, int num_samples,
                 PRNG &prng_engine, int time_steps) {
-    // For every socket, store those that projected to me in the
+    // For every socket, store sockets that projected to me in the
     // the previous timestep.
     std::vector<std::pair<std::vector<sg::socket*>, std::vector<double>> projecting_to_me;
     

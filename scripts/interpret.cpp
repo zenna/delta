@@ -1,6 +1,9 @@
 /* This file will eventually be the interpreter for sigma machines */
+#include <random>
+
 #include "sigma/machines/machines.h"
 #include "sigma/helpers/io.h"
+#include "sigma/helpers/propagation.h"
 
 int main() {
     sg::Type integer_type(sg::Type::Prim::Integer);
@@ -18,14 +21,14 @@ int main() {
     sg::Value zero_value(0,integer_type);
     zero.set_socket(sg::Name("value"), one_value);
 
-    sg::integerAdd add(sg::Name("add"));
+    sg::IntegerAdd add(sg::Name("add"));
 
     // Let's create the data for a directory
-    setup_coupling(one, sg::Name("value"), add, sg::Name("arg0"), 1.0);
+    sg::setup_coupling(one, sg::Name("value"), add, sg::Name("arg0"), 1.0);
 
-    // TODO: Set the directories of these machiens
-    // Add a functional machine
-    // sg::integerAdd add(sg::Name("add"));
-
-    // run_universe(loop);
+    // Run the system - i.e. execute the program
+    std::mt19937 prng_engine; prng_engine;
+    int num_samples = 10, time_steps = 10;
+    std::list<sg::Machine *> ensemble = {&one, &zero, &add};
+    sg::propagate_samples(num_samples, prng_engine, time_steps)
 }
