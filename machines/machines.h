@@ -10,7 +10,7 @@
 #include "sigma/primitives/values.h"
 #include "sigma/primitives/types.h"
 #include "sigma/helpers/io.h"
-// #include "sigma/helpers/propagation.h"
+#include "sigma/helpers/invalid.h"
 
 
 namespace sg {
@@ -56,15 +56,19 @@ public:
     std::map<sg::Name, sg::VariableSocket> variable_sockets;
     sg::Name name;
     sg::MachineType machine_type;
-    Machine(sg::Name name) : name(name) {}  
+    Machine(sg::Name name) : name(name) {}
+
 
     // Return a socket by its name
-    sg::VariableSocket get_socket(sg::Name socket_name) const {
+    sg::VariableSocket & get_socket(sg::Name socket_name) const {
         auto socket = variable_sockets.find(socket_name);
         if (socket == variable_sockets.end()) {
             std::cout << "Couldn't find value" << std::endl;
+            return sg::INVALID_SOCKET;
         }
-        return this->variable_sockets[socket_name];
+        else {
+            return socket->second;
+        }
     }
 
     /**

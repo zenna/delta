@@ -2,6 +2,7 @@
 #include <vector>
 #include <map>
 #include "sigma/machines/machines.h"
+#include "sigma/helpers/invalid.h"
 
 namespace sg {
 
@@ -10,7 +11,7 @@ namespace sg {
  @brief  Check if machine has socket of given name
  */
 bool has_machine_socket(sg::Machine const &machine, sg::Name socket_name) {
-    if (machine.get_socket(socket_name) == sg::INVALID) {
+    if (is_invalid(machine.get_socket(socket_name))) {
         return false;
     }
     else {
