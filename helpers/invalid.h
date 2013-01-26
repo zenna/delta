@@ -1,6 +1,6 @@
 /*Invalid structure*/
 #pragma once
-#include "sigma/machines/machines.h"
+#include "sigma/machines/sockets.h"
 
 namespace sg {
 

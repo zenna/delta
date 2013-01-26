@@ -7,6 +7,7 @@
 #include <iostream>
 
 #include "sigma/machines/naming.h"
+#include "sigma/machines/sockets.h"
 #include "sigma/primitives/values.h"
 #include "sigma/primitives/types.h"
 #include "sigma/helpers/io.h"
@@ -28,19 +29,6 @@ sg::Type make_dir_type() {
     dir_type.add_edge(1,4);
     return dir_type;
 }
-
-// A variable socket can be propagated to and stores
-// Samples from its distribution
-class VariableSocket {
-public:
-    sg::Value value;
-    std::vector<sg::Value> samples;
-    std::vector<sg::Value> prev_samples;
-    void set_value(sg::Value value_) {
-        value = value_;
-    }
-};
-
 
 /**
  @brief  Base Machine Class
