@@ -1,6 +1,5 @@
 /* This file will eventually be the interpreter for sigma machines */
 #include <random>
-
 #include "sigma/machines/machines.h"
 #include "sigma/helpers/io.h"
 #include "sigma/helpers/propagation.h"
