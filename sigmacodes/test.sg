@@ -1,9 +1,0 @@
-plus:doplus
-data:one
-data:zero
-
-one -> doplus @alpha
-zero -> doplus @alpha
-doplus -> one @alpha
-
-@alpha data:one, data:zero -> plus:doplus -> data:one

@@ -1,9 +1,0 @@
-= Implement sg::INVALID
-- Set_socket needs updating - it should create samples
-- implement tuple/list push_value
-
-2. How to do deal with varying
-
-Qs
-
-Do i want get_socket to be returning a socket or pointer/reference to one?
